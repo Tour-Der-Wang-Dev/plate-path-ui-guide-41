@@ -106,11 +106,24 @@ export const completeDelivery = async (orderId: string) => {
 
 export const cancelOrder = async (orderId: string, reason?: string) => {
   if (isDev) {
-    // Check if mockOrdersApi has cancelOrder method
+    // Add cancelOrder method implementation instead of just checking if it exists
     if (typeof mockOrdersApi.cancelOrder === 'function') {
       return mockOrdersApi.cancelOrder(orderId, reason);
     }
-    // Fallback if the method doesn't exist
+    
+    // If mockOrdersApi.cancelOrder doesn't exist, provide a fallback implementation
+    const orderIndex = (mockOrdersApi as any).mockOrders?.findIndex((o: Order) => o.id === orderId);
+    if (orderIndex !== -1 && orderIndex !== undefined) {
+      const updatedOrder = {
+        ...(mockOrdersApi as any).mockOrders[orderIndex],
+        status: OrderStatus.CANCELLED,
+        updateAt: new Date()
+      };
+      (mockOrdersApi as any).mockOrders[orderIndex] = updatedOrder;
+      return updatedOrder;
+    }
+    
+    // Default fallback
     return { id: orderId, status: OrderStatus.CANCELLED } as Order;
   }
   

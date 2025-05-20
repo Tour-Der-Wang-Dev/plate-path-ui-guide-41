@@ -33,12 +33,15 @@ export const getRestaurantReviews = async (restaurantId: string) => {
 
 export const getDriverReviews = async (driverId: string) => {
   if (isDev) {
-    // Fix: Ensure mockReviewsApi has getDriverReviews method or provide fallback
+    // Direct implementation instead of checking for method existence
     if (mockReviewsApi.getDriverReviews) {
       return mockReviewsApi.getDriverReviews(driverId);
     }
-    // Fallback if method doesn't exist
-    return [] as Review[];
+    
+    // Fallback implementation
+    // Filter driver reviews from the mockReviews array
+    return ((mockReviewsApi as any).mockReviews || [])
+      .filter((review: Review) => review.driverId === driverId);
   }
   
   const response = await api.get<Review[]>(`/reviews/driver/${driverId}`);
@@ -47,12 +50,15 @@ export const getDriverReviews = async (driverId: string) => {
 
 export const getCustomerReviews = async (customerId: string) => {
   if (isDev) {
-    // Fix: Ensure mockReviewsApi has getCustomerReviews method or provide fallback
+    // Direct implementation instead of checking for method existence
     if (mockReviewsApi.getCustomerReviews) {
       return mockReviewsApi.getCustomerReviews(customerId);
     }
-    // Fallback if method doesn't exist
-    return [] as Review[];
+    
+    // Fallback implementation
+    // Filter customer reviews from the mockReviews array
+    return ((mockReviewsApi as any).mockReviews || [])
+      .filter((review: Review) => review.customerId === customerId);
   }
   
   const response = await api.get<Review[]>(`/reviews/customer/${customerId}`);
