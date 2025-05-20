@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, MapPin, Navigation, Phone, UserIcon, X } from "lucide-react";
+import { CheckCircle, MapPin, Navigation, Phone, Route, Truck, UserIcon, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 
@@ -32,8 +32,8 @@ const DeliveryDetail = ({ delivery, onClose, onComplete }: DeliveryDetailProps) 
   };
 
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-      <Card className="w-full max-w-md border border-white/20 dark:border-white/5 shadow-[8px_8px_16px_rgba(0,0,0,0.05),-8px_-8px_16px_rgba(255,255,255,0.1)] dark:shadow-[8px_8px_16px_rgba(0,0,0,0.2),-8px_-8px_16px_rgba(255,255,255,0.03)] bg-gradient-to-br from-white/95 to-white/85 dark:from-background/95 dark:to-background/90 backdrop-blur-md">
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in">
+      <Card className="w-full max-w-md border border-white/30 dark:border-white/10 shadow-[12px_12px_24px_rgba(0,0,0,0.08),-12px_-12px_24px_rgba(255,255,255,0.15)] dark:shadow-[12px_12px_24px_rgba(0,0,0,0.3),-12px_-12px_24px_rgba(255,255,255,0.05)] bg-gradient-to-br from-white/98 to-white/90 dark:from-background/98 dark:to-background/90 backdrop-blur-md overflow-hidden">
         <CardHeader className="relative border-b border-border/30 pb-4">
           <Button 
             variant="ghost" 
@@ -43,16 +43,23 @@ const DeliveryDetail = ({ delivery, onClose, onComplete }: DeliveryDetailProps) 
           >
             <X className="h-4 w-4" />
           </Button>
-          <Badge className="mb-2 bg-gradient-to-r from-food-primary to-food-primary/80 text-white font-medium border-none shadow-sm">
-            Order #{delivery.id}
-          </Badge>
-          <CardTitle className="text-xl bg-gradient-to-r from-foreground to-foreground/90 bg-clip-text text-transparent">
-            Delivery Details
-          </CardTitle>
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-food-primary/20 to-food-primary/5 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-1px_-1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center">
+              <Truck className="h-5 w-5 text-food-primary" />
+            </div>
+            <div>
+              <Badge className="mb-1 bg-gradient-to-r from-food-primary to-food-primary/80 text-white font-medium border-none shadow-sm">
+                Order #{delivery.id}
+              </Badge>
+              <CardTitle className="text-xl bg-gradient-to-r from-foreground to-foreground/90 bg-clip-text text-transparent">
+                Delivery Details
+              </CardTitle>
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
           {/* Customer Information */}
-          <div className="flex items-center gap-3 bg-gradient-to-br from-muted/40 to-muted/20 p-4 rounded-lg hover:shadow-sm transition-all duration-300 border border-white/10">
+          <div className="flex items-center gap-3 bg-gradient-to-br from-muted/40 to-muted/10 p-4 rounded-lg hover:shadow-sm transition-all duration-300 border border-white/20 dark:border-white/5">
             <div className="h-12 w-12 rounded-full bg-gradient-to-br from-food-primary/15 to-food-primary/5 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-1px_-1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center">
               <UserIcon className="h-5 w-5 text-food-primary" />
             </div>
@@ -66,7 +73,7 @@ const DeliveryDetail = ({ delivery, onClose, onComplete }: DeliveryDetailProps) 
               <Button 
                 variant="outline" 
                 size="icon" 
-                className="rounded-full h-9 w-9 border-food-primary/20 bg-white/50 dark:bg-background/50 hover:bg-food-primary/10 hover:text-food-primary shadow-sm"
+                className="rounded-full h-9 w-9 border-food-primary/20 bg-white/70 dark:bg-background/70 hover:bg-food-primary/10 hover:text-food-primary shadow-sm"
                 onClick={handlePhoneCall}
               >
                 <Phone className="h-4 w-4" />
@@ -75,7 +82,7 @@ const DeliveryDetail = ({ delivery, onClose, onComplete }: DeliveryDetailProps) 
           </div>
           
           {/* Location Information */}
-          <div className="space-y-4">
+          <div className="space-y-4 bg-gradient-to-br from-muted/20 to-transparent p-4 rounded-lg border border-white/10 dark:border-white/5">
             <div className="flex items-start gap-3">
               <div className="min-w-8 h-8 rounded-full bg-gradient-to-br from-food-primary/15 to-food-primary/5 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-1px_-1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center mt-0.5">
                 <MapPin className="h-4 w-4 text-food-primary" />
@@ -101,14 +108,15 @@ const DeliveryDetail = ({ delivery, onClose, onComplete }: DeliveryDetailProps) 
           
           {/* Delivery Details */}
           {delivery.items && (
-            <div className="pt-4 border-t border-border/30 space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Items</span>
-                <span className="font-medium">{delivery.items}</span>
+            <div className="pt-4 border-t border-border/30 space-y-3">
+              <p className="text-sm font-medium text-muted-foreground">Order Summary</p>
+              <div className="flex justify-between items-center bg-muted/20 p-2 rounded-md">
+                <span className="text-sm">Items</span>
+                <span className="font-medium px-2 py-0.5 bg-muted/30 rounded-md">{delivery.items}</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Order Total</span>
-                <span className="font-medium">{delivery.total}</span>
+              <div className="flex justify-between items-center bg-muted/20 p-2 rounded-md">
+                <span className="text-sm">Order Total</span>
+                <span className="font-medium text-food-primary px-2 py-0.5 bg-food-primary/10 rounded-md">{delivery.total}</span>
               </div>
             </div>
           )}
@@ -117,7 +125,7 @@ const DeliveryDetail = ({ delivery, onClose, onComplete }: DeliveryDetailProps) 
           {delivery.eta && (
             <div className="flex items-center justify-between pt-4 border-t border-border/30">
               <span className="text-sm font-medium">Estimated Arrival</span>
-              <Badge variant="outline" className="bg-muted/50 font-medium border border-white/10 shadow-sm">
+              <Badge variant="outline" className="bg-muted/30 font-medium border border-white/20 shadow-sm">
                 {delivery.eta}
               </Badge>
             </div>
@@ -126,7 +134,7 @@ const DeliveryDetail = ({ delivery, onClose, onComplete }: DeliveryDetailProps) 
         <CardFooter className="flex gap-3 pt-2 border-t border-border/30">
           <Button 
             variant="outline" 
-            className="flex-1 bg-white/50 dark:bg-background/50 shadow-sm border-white/20 dark:border-white/5" 
+            className="flex-1 bg-white/70 dark:bg-background/50 shadow-sm border-white/30 dark:border-white/10 hover:bg-muted/30" 
             onClick={onClose}
           >
             Close
