@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/context/CartContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 // Pages
 import LandingPage from "./pages/LandingPage";
@@ -40,40 +41,42 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <CartProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Landing Page */}
-            <Route path="/" element={<LandingPage />} />
-            
-            {/* Customer App Routes */}
-            <Route path="/customer" element={<CustomerApp />} />
-            <Route path="/customer/login" element={<CustomerLogin />} />
-            <Route path="/customer/signup" element={<CustomerSignup />} />
-            
-            {/* Vendor App Routes */}
-            <Route path="/vendor" element={<VendorApp />} />
-            <Route path="/vendor/login" element={<VendorLogin />} />
-            <Route path="/vendor/signup" element={<VendorSignup />} />
-            
-            {/* Driver App Routes */}
-            <Route path="/driver" element={<DriverApp />} />
-            <Route path="/driver/login" element={<DriverLogin />} />
-            <Route path="/driver/signup" element={<DriverSignup />} />
-            
-            {/* Admin Dashboard Routes */}
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            
-            {/* Catch-all route for 404 */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
-    </TooltipProvider>
+    <ThemeProvider defaultTheme="system">
+      <TooltipProvider>
+        <CartProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Landing Page */}
+              <Route path="/" element={<LandingPage />} />
+              
+              {/* Customer App Routes */}
+              <Route path="/customer" element={<CustomerApp />} />
+              <Route path="/customer/login" element={<CustomerLogin />} />
+              <Route path="/customer/signup" element={<CustomerSignup />} />
+              
+              {/* Vendor App Routes */}
+              <Route path="/vendor" element={<VendorApp />} />
+              <Route path="/vendor/login" element={<VendorLogin />} />
+              <Route path="/vendor/signup" element={<VendorSignup />} />
+              
+              {/* Driver App Routes */}
+              <Route path="/driver" element={<DriverApp />} />
+              <Route path="/driver/login" element={<DriverLogin />} />
+              <Route path="/driver/signup" element={<DriverSignup />} />
+              
+              {/* Admin Dashboard Routes */}
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              
+              {/* Catch-all route for 404 */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
