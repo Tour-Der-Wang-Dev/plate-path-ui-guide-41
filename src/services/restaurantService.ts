@@ -43,9 +43,9 @@ export const getRestaurantMenu = async (restaurantId: string) => {
 
 export const getRestaurantsByVendor = async (vendorId: string) => {
   if (isDev) {
-    // Direct implementation instead of checking if method exists
-    if (mockRestaurantsApi.getRestaurantsByVendor) {
-      return mockRestaurantsApi.getRestaurantsByVendor(vendorId);
+    // Safely check if the method exists on mockRestaurantsApi
+    if (typeof (mockRestaurantsApi as any).getRestaurantsByVendor === 'function') {
+      return (mockRestaurantsApi as any).getRestaurantsByVendor(vendorId);
     }
     
     // Fallback implementation if method doesn't exist
@@ -60,9 +60,9 @@ export const getRestaurantsByVendor = async (vendorId: string) => {
 
 export const createRestaurant = async (restaurantData: Omit<Restaurant, 'id' | 'rating' | 'createdAt' | 'updatedAt'>) => {
   if (isDev) {
-    // Direct implementation instead of checking if method exists
-    if (mockRestaurantsApi.createRestaurant) {
-      return mockRestaurantsApi.createRestaurant(restaurantData);
+    // Safely check if the method exists on mockRestaurantsApi
+    if (typeof (mockRestaurantsApi as any).createRestaurant === 'function') {
+      return (mockRestaurantsApi as any).createRestaurant(restaurantData);
     }
     
     // Fallback implementation
@@ -88,9 +88,9 @@ export const createRestaurant = async (restaurantData: Omit<Restaurant, 'id' | '
 
 export const updateRestaurant = async (id: string, restaurantData: Partial<Restaurant>) => {
   if (isDev) {
-    // Direct implementation instead of checking if method exists
-    if (mockRestaurantsApi.updateRestaurant) {
-      return mockRestaurantsApi.updateRestaurant(id, restaurantData);
+    // Safely check if the method exists on mockRestaurantsApi
+    if (typeof (mockRestaurantsApi as any).updateRestaurant === 'function') {
+      return (mockRestaurantsApi as any).updateRestaurant(id, restaurantData);
     }
     
     // Fallback implementation
@@ -125,9 +125,9 @@ export const updateRestaurant = async (id: string, restaurantData: Partial<Resta
 
 export const createMenuItem = async (menuItemData: Omit<MenuItem, 'id' | 'createdAt' | 'updatedAt'>) => {
   if (isDev) {
-    // Direct implementation instead of checking if method exists
-    if (mockRestaurantsApi.createMenuItem) {
-      return mockRestaurantsApi.createMenuItem(menuItemData);
+    // Safely check if the method exists on mockRestaurantsApi
+    if (typeof (mockRestaurantsApi as any).createMenuItem === 'function') {
+      return (mockRestaurantsApi as any).createMenuItem(menuItemData);
     }
     
     // Fallback implementation
@@ -156,9 +156,9 @@ export const createMenuItem = async (menuItemData: Omit<MenuItem, 'id' | 'create
 
 export const updateMenuItem = async (id: string, menuItemData: Partial<MenuItem>) => {
   if (isDev) {
-    // Direct implementation instead of checking if method exists
-    if (mockRestaurantsApi.updateMenuItem) {
-      return mockRestaurantsApi.updateMenuItem(id, menuItemData);
+    // Safely check if the method exists on mockRestaurantsApi
+    if (typeof (mockRestaurantsApi as any).updateMenuItem === 'function') {
+      return (mockRestaurantsApi as any).updateMenuItem(id, menuItemData);
     }
     
     // Fallback implementation
@@ -196,9 +196,9 @@ export const updateMenuItem = async (id: string, menuItemData: Partial<MenuItem>
 
 export const deleteMenuItem = async (id: string) => {
   if (isDev) {
-    // Direct implementation instead of checking if method exists
-    if (mockRestaurantsApi.deleteMenuItem) {
-      return mockRestaurantsApi.deleteMenuItem(id);
+    // Safely check if the method exists on mockRestaurantsApi
+    if (typeof (mockRestaurantsApi as any).deleteMenuItem === 'function') {
+      return (mockRestaurantsApi as any).deleteMenuItem(id);
     }
     
     // Fallback implementation

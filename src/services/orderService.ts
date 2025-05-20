@@ -106,9 +106,9 @@ export const completeDelivery = async (orderId: string) => {
 
 export const cancelOrder = async (orderId: string, reason?: string) => {
   if (isDev) {
-    // Add cancelOrder method implementation instead of just checking if it exists
-    if (typeof mockOrdersApi.cancelOrder === 'function') {
-      return mockOrdersApi.cancelOrder(orderId, reason);
+    // Safely check if the cancelOrder method exists on mockOrdersApi
+    if (typeof (mockOrdersApi as any).cancelOrder === 'function') {
+      return (mockOrdersApi as any).cancelOrder(orderId, reason);
     }
     
     // If mockOrdersApi.cancelOrder doesn't exist, provide a fallback implementation

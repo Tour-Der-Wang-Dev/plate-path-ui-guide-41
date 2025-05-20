@@ -33,9 +33,9 @@ export const getRestaurantReviews = async (restaurantId: string) => {
 
 export const getDriverReviews = async (driverId: string) => {
   if (isDev) {
-    // Direct implementation instead of checking for method existence
-    if (mockReviewsApi.getDriverReviews) {
-      return mockReviewsApi.getDriverReviews(driverId);
+    // Safely check if the method exists on mockReviewsApi
+    if (typeof (mockReviewsApi as any).getDriverReviews === 'function') {
+      return (mockReviewsApi as any).getDriverReviews(driverId);
     }
     
     // Fallback implementation
@@ -50,9 +50,9 @@ export const getDriverReviews = async (driverId: string) => {
 
 export const getCustomerReviews = async (customerId: string) => {
   if (isDev) {
-    // Direct implementation instead of checking for method existence
-    if (mockReviewsApi.getCustomerReviews) {
-      return mockReviewsApi.getCustomerReviews(customerId);
+    // Safely check if the method exists on mockReviewsApi
+    if (typeof (mockReviewsApi as any).getCustomerReviews === 'function') {
+      return (mockReviewsApi as any).getCustomerReviews(customerId);
     }
     
     // Fallback implementation
