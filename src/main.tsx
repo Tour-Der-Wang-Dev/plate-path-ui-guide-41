@@ -2,6 +2,7 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import { trackWebVitals, sendToAnalytics } from './utils/webVitalsUtils'
 
 // Register service worker
 if ('serviceWorker' in navigator) {
@@ -15,5 +16,8 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+
+// Track Web Vitals
+trackWebVitals(sendToAnalytics);
 
 createRoot(document.getElementById("root")!).render(<App />);
