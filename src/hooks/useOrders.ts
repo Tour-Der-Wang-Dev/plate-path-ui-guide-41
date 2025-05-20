@@ -12,15 +12,20 @@ import {
   CreateOrderRequest
 } from '@/services/orderService';
 import { Order, OrderStatus } from '@/types';
+import { useToast } from '@/hooks/use-toast';
 
 export const useCreateOrder = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   
   return useMutation({
     mutationFn: (orderData: CreateOrderRequest) => createOrder(orderData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
-      // Show success toast
+      toast({
+        title: "Order placed successfully",
+        description: "Your order has been received by the restaurant."
+      });
     },
   });
 };
@@ -65,6 +70,7 @@ export const useDriverOrders = (status?: OrderStatus) => {
 
 export const useUpdateOrderStatus = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   
   return useMutation({
     mutationFn: ({ orderId, status }: { orderId: string; status: OrderStatus }) => 
@@ -72,33 +78,44 @@ export const useUpdateOrderStatus = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['order', data.id] });
       queryClient.invalidateQueries({ queryKey: ['vendor-orders'] });
-      // Show success toast
+      toast({
+        title: "Order status updated",
+        description: `Order #${data.id.slice(-4)} status set to ${data.status}`
+      });
     },
   });
 };
 
 export const useAcceptDriverTask = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   
   return useMutation({
     mutationFn: (orderId: string) => acceptDriverTask(orderId),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['order', data.id] });
       queryClient.invalidateQueries({ queryKey: ['driver-orders'] });
-      // Show success toast
+      toast({
+        title: "Delivery task accepted",
+        description: `You have accepted delivery for order #${data.id.slice(-4)}`
+      });
     },
   });
 };
 
 export const useCompleteDelivery = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   
   return useMutation({
     mutationFn: (orderId: string) => completeDelivery(orderId),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['order', data.id] });
       queryClient.invalidateQueries({ queryKey: ['driver-orders'] });
-      // Show success toast
+      toast({
+        title: "Delivery completed",
+        description: `Order #${data.id.slice(-4)} has been delivered successfully`
+      });
     },
   });
 };
