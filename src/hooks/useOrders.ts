@@ -46,25 +46,58 @@ export const useOrder = (id?: string) => {
 };
 
 export const useCustomerOrders = () => {
+  const { toast } = useToast();
+  
   return useQuery<Order[], Error>({
     queryKey: ['customer-orders'],
     queryFn: () => getCustomerOrders(),
+    meta: {
+      onError: (error: Error) => {
+        toast({
+          title: "Error loading orders",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
+    }
   });
 };
 
 export const useVendorOrders = (status?: OrderStatus) => {
+  const { toast } = useToast();
+  
   return useQuery<Order[], Error>({
     queryKey: ['vendor-orders', status],
     queryFn: () => getVendorOrders(status),
     refetchInterval: 60000, // Refetch every minute
+    meta: {
+      onError: (error: Error) => {
+        toast({
+          title: "Error loading vendor orders",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
+    }
   });
 };
 
 export const useDriverOrders = (status?: OrderStatus) => {
+  const { toast } = useToast();
+  
   return useQuery<Order[], Error>({
     queryKey: ['driver-orders', status],
     queryFn: () => getDriverOrders(status),
     refetchInterval: 60000, // Refetch every minute
+    meta: {
+      onError: (error: Error) => {
+        toast({
+          title: "Error loading driver tasks",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
+    }
   });
 };
 
@@ -83,6 +116,13 @@ export const useUpdateOrderStatus = () => {
         description: `Order #${data.id.slice(-4)} status set to ${data.status}`
       });
     },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to update order status",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
   });
 };
 
@@ -100,6 +140,13 @@ export const useAcceptDriverTask = () => {
         description: `You have accepted delivery for order #${data.id.slice(-4)}`
       });
     },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to accept task",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
   });
 };
 
@@ -117,5 +164,12 @@ export const useCompleteDelivery = () => {
         description: `Order #${data.id.slice(-4)} has been delivered successfully`
       });
     },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to complete delivery",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
   });
 };

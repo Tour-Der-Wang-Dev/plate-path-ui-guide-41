@@ -10,12 +10,14 @@ export const useRestaurants = (params?: { location?: string; cuisine?: string })
   return useQuery<Restaurant[], Error>({
     queryKey: ['restaurants', params],
     queryFn: () => getRestaurants(params),
-    onError: (error) => {
-      toast({
-        title: "Error loading restaurants",
-        description: error.message,
-        variant: "destructive"
-      });
+    meta: {
+      onError: (error: Error) => {
+        toast({
+          title: "Error loading restaurants",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
     }
   });
 };
@@ -27,12 +29,14 @@ export const useRestaurant = (id?: string) => {
     queryKey: ['restaurant', id],
     queryFn: () => getRestaurantById(id as string),
     enabled: !!id,
-    onError: (error) => {
-      toast({
-        title: "Error loading restaurant",
-        description: error.message,
-        variant: "destructive"
-      });
+    meta: {
+      onError: (error: Error) => {
+        toast({
+          title: "Error loading restaurant",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
     }
   });
 };
@@ -44,12 +48,14 @@ export const useRestaurantMenu = (restaurantId?: string) => {
     queryKey: ['restaurant-menu', restaurantId],
     queryFn: () => getRestaurantMenu(restaurantId as string),
     enabled: !!restaurantId,
-    onError: (error) => {
-      toast({
-        title: "Error loading menu",
-        description: error.message,
-        variant: "destructive"
-      });
+    meta: {
+      onError: (error: Error) => {
+        toast({
+          title: "Error loading menu",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
     }
   });
 };

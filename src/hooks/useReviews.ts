@@ -19,7 +19,7 @@ export const useCreateReview = () => {
         description: "Thank you for your feedback!"
       });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast({
         title: "Error submitting review",
         description: error.message,
@@ -36,12 +36,14 @@ export const useRestaurantReviews = (restaurantId?: string) => {
     queryKey: ['restaurant-reviews', restaurantId],
     queryFn: () => getRestaurantReviews(restaurantId as string),
     enabled: !!restaurantId,
-    onError: (error) => {
-      toast({
-        title: "Error loading reviews",
-        description: error.message,
-        variant: "destructive"
-      });
+    meta: {
+      onError: (error: Error) => {
+        toast({
+          title: "Error loading reviews",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
     }
   });
 };
