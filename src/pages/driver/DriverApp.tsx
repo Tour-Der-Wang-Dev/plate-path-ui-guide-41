@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Clock, MapPin, Banknote, Navigation, ChevronRight, Star, ShieldCheck } from "lucide-react";
-import { useOrders } from "@/hooks/useOrders";
+import { useDriverOrders } from "@/hooks/useOrders";
 import { Badge } from "@/components/ui/badge";
 import { cardVariants, textVariants, responsiveSpacing } from "@/lib/design-system";
 
@@ -15,7 +14,7 @@ const DriverApp = () => {
   const [currentView, setCurrentView] = useState<'dashboard' | 'earnings' | 'deliveries'>('dashboard');
   
   // Use the hooks to get order data
-  const { data: driverOrders, isLoading } = useOrders();
+  const { data: driverOrders, isLoading } = useDriverOrders();
   
   // Sample data for driver dashboard
   const stats = [
