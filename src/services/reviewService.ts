@@ -30,3 +30,21 @@ export const getRestaurantReviews = async (restaurantId: string) => {
   const response = await api.get<Review[]>(`/reviews/restaurant/${restaurantId}`);
   return response.data;
 };
+
+export const getDriverReviews = async (driverId: string) => {
+  if (isDev) {
+    return mockReviewsApi.getDriverReviews(driverId);
+  }
+  
+  const response = await api.get<Review[]>(`/reviews/driver/${driverId}`);
+  return response.data;
+};
+
+export const getCustomerReviews = async (customerId: string) => {
+  if (isDev) {
+    return mockReviewsApi.getCustomerReviews(customerId);
+  }
+  
+  const response = await api.get<Review[]>(`/reviews/customer/${customerId}`);
+  return response.data;
+};

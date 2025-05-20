@@ -18,6 +18,13 @@ export interface CreateOrderRequest {
   notes?: string;
 }
 
+export interface OrderQuery {
+  status?: OrderStatus;
+  fromDate?: string;
+  toDate?: string;
+  limit?: number;
+}
+
 export const createOrder = async (orderData: CreateOrderRequest) => {
   if (isDev) {
     return mockOrdersApi.createOrder(orderData);
@@ -36,33 +43,35 @@ export const getOrderById = async (id: string) => {
   return response.data;
 };
 
-export const getCustomerOrders = async () => {
+export const getCustomerOrders = async (params?: OrderQuery) => {
   if (isDev) {
-    return mockOrdersApi.getCustomerOrders();
+    return mockOrdersApi.getCustomerOrders(params);
   }
   
-  const response = await api.get<Order[]>('/orders/customer');
-  return response.data;
-};
-
-export const getVendorOrders = async (status?: OrderStatus) => {
-  if (isDev) {
-    return mockOrdersApi.getVendorOrders(status);
-  }
-  
-  const response = await api.get<Order[]>('/orders/vendor', { 
-    params: status ? { status } : undefined 
+  const response = await api.get<Order[]>('/orders/customer', { 
+    params
   });
   return response.data;
 };
 
-export const getDriverOrders = async (status?: OrderStatus) => {
+export const getVendorOrders = async (params?: OrderQuery) => {
   if (isDev) {
-    return mockOrdersApi.getDriverOrders(status);
+    return mockOrdersApi.getVendorOrders(params?.status);
+  }
+  
+  const response = await api.get<Order[]>('/orders/vendor', { 
+    params
+  });
+  return response.data;
+};
+
+export const getDriverOrders = async (params?: OrderQuery) => {
+  if (isDev) {
+    return mockOrdersApi.getDriverOrders(params?.status);
   }
   
   const response = await api.get<Order[]>('/orders/driver', { 
-    params: status ? { status } : undefined 
+    params
   });
   return response.data;
 };
@@ -91,5 +100,14 @@ export const completeDelivery = async (orderId: string) => {
   }
   
   const response = await api.post<Order>(`/orders/${orderId}/complete-delivery`);
+  return response.data;
+};
+
+export const cancelOrder = async (orderId: string, reason?: string) => {
+  if (isDev) {
+    return mockOrdersApi.cancelOrder(orderId, reason);
+  }
+  
+  const response = await api.post<Order>(`/orders/${orderId}/cancel`, { reason });
   return response.data;
 };

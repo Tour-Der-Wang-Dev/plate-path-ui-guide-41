@@ -9,7 +9,9 @@ import {
   updateOrderStatus,
   acceptDriverTask,
   completeDelivery,
-  CreateOrderRequest
+  cancelOrder,
+  CreateOrderRequest,
+  OrderQuery
 } from '@/services/orderService';
 import { Order, OrderStatus } from '@/types';
 import { useToast } from '@/hooks/use-toast';
@@ -27,10 +29,19 @@ export const useCreateOrder = () => {
         description: "Your order has been received by the restaurant."
       });
     },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to place order",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
   });
 };
 
 export const useOrder = (id?: string) => {
+  const { toast } = useToast();
+  
   return useQuery<Order, Error>({
     queryKey: ['order', id],
     queryFn: () => getOrderById(id as string),
@@ -42,15 +53,24 @@ export const useOrder = (id?: string) => {
       }
       return false; // Don't refetch completed orders
     },
+    meta: {
+      onError: (error: Error) => {
+        toast({
+          title: "Error loading order details",
+          description: error.message,
+          variant: "destructive"
+        });
+      }
+    }
   });
 };
 
-export const useCustomerOrders = () => {
+export const useCustomerOrders = (params?: OrderQuery) => {
   const { toast } = useToast();
   
   return useQuery<Order[], Error>({
-    queryKey: ['customer-orders'],
-    queryFn: () => getCustomerOrders(),
+    queryKey: ['customer-orders', params],
+    queryFn: () => getCustomerOrders(params),
     meta: {
       onError: (error: Error) => {
         toast({
@@ -63,12 +83,12 @@ export const useCustomerOrders = () => {
   });
 };
 
-export const useVendorOrders = (status?: OrderStatus) => {
+export const useVendorOrders = (params?: OrderQuery) => {
   const { toast } = useToast();
   
   return useQuery<Order[], Error>({
-    queryKey: ['vendor-orders', status],
-    queryFn: () => getVendorOrders(status),
+    queryKey: ['vendor-orders', params],
+    queryFn: () => getVendorOrders(params),
     refetchInterval: 60000, // Refetch every minute
     meta: {
       onError: (error: Error) => {
@@ -82,12 +102,12 @@ export const useVendorOrders = (status?: OrderStatus) => {
   });
 };
 
-export const useDriverOrders = (status?: OrderStatus) => {
+export const useDriverOrders = (params?: OrderQuery) => {
   const { toast } = useToast();
   
   return useQuery<Order[], Error>({
-    queryKey: ['driver-orders', status],
-    queryFn: () => getDriverOrders(status),
+    queryKey: ['driver-orders', params],
+    queryFn: () => getDriverOrders(params),
     refetchInterval: 60000, // Refetch every minute
     meta: {
       onError: (error: Error) => {
@@ -167,6 +187,32 @@ export const useCompleteDelivery = () => {
     onError: (error: Error) => {
       toast({
         title: "Failed to complete delivery",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  });
+};
+
+export const useCancelOrder = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  
+  return useMutation({
+    mutationFn: ({ orderId, reason }: { orderId: string; reason?: string }) => 
+      cancelOrder(orderId, reason),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['order', data.id] });
+      queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
+      queryClient.invalidateQueries({ queryKey: ['vendor-orders'] });
+      toast({
+        title: "Order cancelled",
+        description: `Order #${data.id.slice(-4)} has been cancelled`
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to cancel order",
         description: error.message,
         variant: "destructive"
       });
