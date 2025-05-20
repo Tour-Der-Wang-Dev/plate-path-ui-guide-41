@@ -35,9 +35,9 @@ export const useOrder = (id?: string) => {
     queryKey: ['order', id],
     queryFn: () => getOrderById(id as string),
     enabled: !!id,
-    refetchInterval: (data) => {
+    refetchInterval: (query) => {
       // Refetch more frequently for active orders
-      if (data && ['pending', 'accepted', 'preparing', 'out_for_delivery'].includes(data.status)) {
+      if (query.state.data && ['pending', 'accepted', 'preparing', 'out_for_delivery'].includes(query.state.data.status)) {
         return 30000; // 30 seconds
       }
       return false; // Don't refetch completed orders
