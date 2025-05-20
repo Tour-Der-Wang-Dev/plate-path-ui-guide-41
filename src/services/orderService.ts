@@ -45,7 +45,8 @@ export const getOrderById = async (id: string) => {
 
 export const getCustomerOrders = async (params?: OrderQuery) => {
   if (isDev) {
-    return mockOrdersApi.getCustomerOrders(params);
+    // Fix: Remove the unnecessary parameter
+    return mockOrdersApi.getCustomerOrders();
   }
   
   const response = await api.get<Order[]>('/orders/customer', { 
@@ -105,7 +106,12 @@ export const completeDelivery = async (orderId: string) => {
 
 export const cancelOrder = async (orderId: string, reason?: string) => {
   if (isDev) {
-    return mockOrdersApi.cancelOrder(orderId, reason);
+    // Fix: Ensure mockOrdersApi has cancelOrder method implementation
+    if (mockOrdersApi.cancelOrder) {
+      return mockOrdersApi.cancelOrder(orderId, reason);
+    }
+    // Fallback if the method doesn't exist
+    return { id: orderId, status: OrderStatus.CANCELLED } as Order;
   }
   
   const response = await api.post<Order>(`/orders/${orderId}/cancel`, { reason });

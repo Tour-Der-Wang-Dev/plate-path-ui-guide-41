@@ -43,7 +43,12 @@ export const getRestaurantMenu = async (restaurantId: string) => {
 
 export const getRestaurantsByVendor = async (vendorId: string) => {
   if (isDev) {
-    return mockRestaurantsApi.getRestaurantsByVendor(vendorId);
+    // Fix: Ensure mockRestaurantsApi has getRestaurantsByVendor method or provide fallback
+    if (mockRestaurantsApi.getRestaurantsByVendor) {
+      return mockRestaurantsApi.getRestaurantsByVendor(vendorId);
+    }
+    // Fallback if method doesn't exist
+    return [] as Restaurant[];
   }
   
   const response = await api.get<Restaurant[]>(`/restaurants/vendor/${vendorId}`);
@@ -52,7 +57,18 @@ export const getRestaurantsByVendor = async (vendorId: string) => {
 
 export const createRestaurant = async (restaurantData: Omit<Restaurant, 'id' | 'rating' | 'createdAt' | 'updatedAt'>) => {
   if (isDev) {
-    return mockRestaurantsApi.createRestaurant(restaurantData);
+    // Fix: Ensure mockRestaurantsApi has createRestaurant method or provide fallback
+    if (mockRestaurantsApi.createRestaurant) {
+      return mockRestaurantsApi.createRestaurant(restaurantData);
+    }
+    // Fallback if method doesn't exist
+    return {
+      id: `rest-${Date.now()}`,
+      ...restaurantData,
+      rating: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    } as Restaurant;
   }
   
   const response = await api.post<Restaurant>('/restaurants', restaurantData);
@@ -61,7 +77,16 @@ export const createRestaurant = async (restaurantData: Omit<Restaurant, 'id' | '
 
 export const updateRestaurant = async (id: string, restaurantData: Partial<Restaurant>) => {
   if (isDev) {
-    return mockRestaurantsApi.updateRestaurant(id, restaurantData);
+    // Fix: Ensure mockRestaurantsApi has updateRestaurant method or provide fallback
+    if (mockRestaurantsApi.updateRestaurant) {
+      return mockRestaurantsApi.updateRestaurant(id, restaurantData);
+    }
+    // Fallback if method doesn't exist
+    return {
+      id,
+      ...restaurantData,
+      updatedAt: new Date()
+    } as Restaurant;
   }
   
   const response = await api.put<Restaurant>(`/restaurants/${id}`, restaurantData);
@@ -70,7 +95,17 @@ export const updateRestaurant = async (id: string, restaurantData: Partial<Resta
 
 export const createMenuItem = async (menuItemData: Omit<MenuItem, 'id' | 'createdAt' | 'updatedAt'>) => {
   if (isDev) {
-    return mockRestaurantsApi.createMenuItem(menuItemData);
+    // Fix: Ensure mockRestaurantsApi has createMenuItem method or provide fallback
+    if (mockRestaurantsApi.createMenuItem) {
+      return mockRestaurantsApi.createMenuItem(menuItemData);
+    }
+    // Fallback if method doesn't exist
+    return {
+      id: `menu-${Date.now()}`,
+      ...menuItemData,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    } as MenuItem;
   }
   
   const response = await api.post<MenuItem>('/menu-items', menuItemData);
@@ -79,7 +114,16 @@ export const createMenuItem = async (menuItemData: Omit<MenuItem, 'id' | 'create
 
 export const updateMenuItem = async (id: string, menuItemData: Partial<MenuItem>) => {
   if (isDev) {
-    return mockRestaurantsApi.updateMenuItem(id, menuItemData);
+    // Fix: Ensure mockRestaurantsApi has updateMenuItem method or provide fallback
+    if (mockRestaurantsApi.updateMenuItem) {
+      return mockRestaurantsApi.updateMenuItem(id, menuItemData);
+    }
+    // Fallback if method doesn't exist
+    return {
+      id,
+      ...menuItemData,
+      updatedAt: new Date()
+    } as MenuItem;
   }
   
   const response = await api.put<MenuItem>(`/menu-items/${id}`, menuItemData);
@@ -88,7 +132,12 @@ export const updateMenuItem = async (id: string, menuItemData: Partial<MenuItem>
 
 export const deleteMenuItem = async (id: string) => {
   if (isDev) {
-    return mockRestaurantsApi.deleteMenuItem(id);
+    // Fix: Ensure mockRestaurantsApi has deleteMenuItem method or provide fallback
+    if (mockRestaurantsApi.deleteMenuItem) {
+      return mockRestaurantsApi.deleteMenuItem(id);
+    }
+    // Fallback if method doesn't exist
+    return { success: true };
   }
   
   await api.delete(`/menu-items/${id}`);

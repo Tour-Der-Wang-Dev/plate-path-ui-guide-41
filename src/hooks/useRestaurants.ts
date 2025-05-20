@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
   getRestaurants, 
@@ -193,9 +192,8 @@ export const useDeleteMenuItem = () => {
   const { toast } = useToast();
   
   return useMutation({
-    mutationFn: ({ id, restaurantId }: { id: string; restaurantId: string }) => {
-      deleteMenuItem(id).then(() => ({ id, restaurantId }));
-    },
+    mutationFn: ({ id, restaurantId }: { id: string; restaurantId: string }) => 
+      deleteMenuItem(id).then(() => ({ id, restaurantId })),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['restaurant-menu', data.restaurantId] });
       toast({

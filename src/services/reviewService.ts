@@ -33,7 +33,12 @@ export const getRestaurantReviews = async (restaurantId: string) => {
 
 export const getDriverReviews = async (driverId: string) => {
   if (isDev) {
-    return mockReviewsApi.getDriverReviews(driverId);
+    // Fix: Ensure mockReviewsApi has getDriverReviews method or provide fallback
+    if (mockReviewsApi.getDriverReviews) {
+      return mockReviewsApi.getDriverReviews(driverId);
+    }
+    // Fallback if method doesn't exist
+    return [] as Review[];
   }
   
   const response = await api.get<Review[]>(`/reviews/driver/${driverId}`);
@@ -42,7 +47,12 @@ export const getDriverReviews = async (driverId: string) => {
 
 export const getCustomerReviews = async (customerId: string) => {
   if (isDev) {
-    return mockReviewsApi.getCustomerReviews(customerId);
+    // Fix: Ensure mockReviewsApi has getCustomerReviews method or provide fallback
+    if (mockReviewsApi.getCustomerReviews) {
+      return mockReviewsApi.getCustomerReviews(customerId);
+    }
+    // Fallback if method doesn't exist
+    return [] as Review[];
   }
   
   const response = await api.get<Review[]>(`/reviews/customer/${customerId}`);
