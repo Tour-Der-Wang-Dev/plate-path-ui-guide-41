@@ -45,7 +45,7 @@ export const getOrderById = async (id: string) => {
 
 export const getCustomerOrders = async (params?: OrderQuery) => {
   if (isDev) {
-    // Fix: Remove the unnecessary parameter
+    // No need to pass params to mock API if it doesn't support them
     return mockOrdersApi.getCustomerOrders();
   }
   
@@ -106,8 +106,8 @@ export const completeDelivery = async (orderId: string) => {
 
 export const cancelOrder = async (orderId: string, reason?: string) => {
   if (isDev) {
-    // Fix: Ensure mockOrdersApi has cancelOrder method implementation
-    if (mockOrdersApi.cancelOrder) {
+    // Check if mockOrdersApi has cancelOrder method
+    if (typeof mockOrdersApi.cancelOrder === 'function') {
       return mockOrdersApi.cancelOrder(orderId, reason);
     }
     // Fallback if the method doesn't exist

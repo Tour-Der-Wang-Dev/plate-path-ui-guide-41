@@ -43,11 +43,11 @@ export const getRestaurantMenu = async (restaurantId: string) => {
 
 export const getRestaurantsByVendor = async (vendorId: string) => {
   if (isDev) {
-    // Fix: Ensure mockRestaurantsApi has getRestaurantsByVendor method or provide fallback
-    if (mockRestaurantsApi.getRestaurantsByVendor) {
+    // Check if the method exists in mockRestaurantsApi
+    if (typeof mockRestaurantsApi.getRestaurantsByVendor === 'function') {
       return mockRestaurantsApi.getRestaurantsByVendor(vendorId);
     }
-    // Fallback if method doesn't exist
+    // Fallback if method doesn't exist - return an empty array as placeholder
     return [] as Restaurant[];
   }
   
@@ -57,8 +57,8 @@ export const getRestaurantsByVendor = async (vendorId: string) => {
 
 export const createRestaurant = async (restaurantData: Omit<Restaurant, 'id' | 'rating' | 'createdAt' | 'updatedAt'>) => {
   if (isDev) {
-    // Fix: Ensure mockRestaurantsApi has createRestaurant method or provide fallback
-    if (mockRestaurantsApi.createRestaurant) {
+    // Check if the method exists in mockRestaurantsApi
+    if (typeof mockRestaurantsApi.createRestaurant === 'function') {
       return mockRestaurantsApi.createRestaurant(restaurantData);
     }
     // Fallback if method doesn't exist
@@ -77,8 +77,8 @@ export const createRestaurant = async (restaurantData: Omit<Restaurant, 'id' | '
 
 export const updateRestaurant = async (id: string, restaurantData: Partial<Restaurant>) => {
   if (isDev) {
-    // Fix: Ensure mockRestaurantsApi has updateRestaurant method or provide fallback
-    if (mockRestaurantsApi.updateRestaurant) {
+    // Check if the method exists in mockRestaurantsApi
+    if (typeof mockRestaurantsApi.updateRestaurant === 'function') {
       return mockRestaurantsApi.updateRestaurant(id, restaurantData);
     }
     // Fallback if method doesn't exist
@@ -95,8 +95,8 @@ export const updateRestaurant = async (id: string, restaurantData: Partial<Resta
 
 export const createMenuItem = async (menuItemData: Omit<MenuItem, 'id' | 'createdAt' | 'updatedAt'>) => {
   if (isDev) {
-    // Fix: Ensure mockRestaurantsApi has createMenuItem method or provide fallback
-    if (mockRestaurantsApi.createMenuItem) {
+    // Check if the method exists in mockRestaurantsApi
+    if (typeof mockRestaurantsApi.createMenuItem === 'function') {
       return mockRestaurantsApi.createMenuItem(menuItemData);
     }
     // Fallback if method doesn't exist
@@ -114,8 +114,8 @@ export const createMenuItem = async (menuItemData: Omit<MenuItem, 'id' | 'create
 
 export const updateMenuItem = async (id: string, menuItemData: Partial<MenuItem>) => {
   if (isDev) {
-    // Fix: Ensure mockRestaurantsApi has updateMenuItem method or provide fallback
-    if (mockRestaurantsApi.updateMenuItem) {
+    // Check if the method exists in mockRestaurantsApi
+    if (typeof mockRestaurantsApi.updateMenuItem === 'function') {
       return mockRestaurantsApi.updateMenuItem(id, menuItemData);
     }
     // Fallback if method doesn't exist
@@ -132,8 +132,8 @@ export const updateMenuItem = async (id: string, menuItemData: Partial<MenuItem>
 
 export const deleteMenuItem = async (id: string) => {
   if (isDev) {
-    // Fix: Ensure mockRestaurantsApi has deleteMenuItem method or provide fallback
-    if (mockRestaurantsApi.deleteMenuItem) {
+    // Check if the method exists in mockRestaurantsApi
+    if (typeof mockRestaurantsApi.deleteMenuItem === 'function') {
       return mockRestaurantsApi.deleteMenuItem(id);
     }
     // Fallback if method doesn't exist

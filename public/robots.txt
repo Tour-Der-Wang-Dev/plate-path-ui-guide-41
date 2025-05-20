@@ -1,3 +1,14 @@
+
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin paths
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /admin/dashboard
+
+# Allow specific bots with full access
 User-agent: Googlebot
 Allow: /
 
@@ -10,5 +21,5 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+# Sitemap location
+Sitemap: https://fooddelivery.example.com/sitemap.xml
